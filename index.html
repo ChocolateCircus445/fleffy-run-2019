@@ -15,6 +15,21 @@
   <canvas id="fleffyCanvas" width="960" height="720" onmousemove="setMouse(event)" onmousedown="onMouseClick()" style="border-style: solid; user-select: none; margin-left: 18.19%;"></canvas>
   <script src="index.js"></script>
   <script>
+  try {
+    drawDot();
+  }
+  catch (e) {
+    setTimeout(function() {
+      var ctx = canvas.getContext('2d');
+      var img = document.createElement("img");
+      img.src = "https://raw.githubusercontent.com/ChocolateCircus445/fleffy-run-2019/master/safariJab.png"
+      ctx.drawImage(img, 0, 0)
+    }, 115)
+
+    //alert("This will not work on Safari.")
+  }
+  </script>
+  <script>
   setInterval(drawDot, 20);</script>
 </body>
 </html>
