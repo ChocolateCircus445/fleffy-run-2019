@@ -10,8 +10,13 @@ M: Lock/unlock Fleffy's position (does not affect jumping)
 
 
 #Compatibility tests
+
 Firefox ✅
+
 Google Chrome ✅
+
 Safari (Mac) ❌
+
 Opera ✅
+
 Edge not tested
