@@ -4,8 +4,12 @@ Fleffy Run for web browsers. It's turning out like the Sonic 06 of Fleffy games.
 
 #Controls
 
+Mouse: Move
+
 Space: Jump
+
 R: Run (when run meter says "Run")
+
 M: Lock/unlock Fleffy's position (does not affect jumping)
 
 
