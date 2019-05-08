@@ -2,19 +2,25 @@
 <head>
   <script src="settings.js"></script>
   <script src="easy.js"></script>
+  <script src="credits.js"></script>
 </head>
 <body onmousemove="isOkToPlayAudio = true;" onkeypress="handleKey(event)">
   <div id="images" style="display: none">
+    <video id="fleffyCredits" width="960" height="720" controls onended="goToTitle()">
+      <source src="fleffyCredits.mp4" type='video/mp4'>
+    </video>
   </div>
   <script src="assets.js"></script>
+  <script src="mobile.js"></script>
   <script>
-  alert("IT\'S 2019, BABY! WHOOOOOOOOOOO! \n Also, this won't work unless your browser is Firefox.");
+  alert("IT\'S 2019, BABY! WHOOOOOOOOOOO!");
   </script>
   <!--<input type="number" id="xdist" value="-2">
   <input type="number" id="ydist" value="20">-->
-  <canvas id="fleffyCanvas" width="960" height="720" onmousemove="setMouse(event)" onmousedown="onMouseClick()" style="border-style: solid; user-select: none; margin-left: 18.19%;"></canvas>
+  <canvas id="fleffyCanvas" width="960" height="720" onmousemove="setMouse(event)" onmousedown="onMouseClick()" ontouchstart="handleTap()" style="border-style: solid; user-select: none; margin-left: 18.19%; width: 960; height: 720;"></canvas>
   <script src="index.js"></script>
   <script>
+  //For Safari users
   try {
     drawDot();
   }
@@ -26,10 +32,10 @@
       ctx.drawImage(img, 0, 0)
     }, 115)
 
-    //alert("This will not work on Safari.")
   }
   </script>
   <script>
-  setInterval(drawDot, 20);</script>
+  var frameRefreshMs = 20;
+  setInterval(drawDot, frameRefreshMs);</script>
 </body>
 </html>

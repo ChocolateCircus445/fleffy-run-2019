@@ -8,13 +8,28 @@ var fleffyX = 16;
 var fleffyY = 484;
 var giftX = 840;
 var giftY = 4;
-var giftBox;
+var creditTextY = fleffyCanvas.height / 2;
+var giftBox; //1
 var keepRunMeter;
 var useMouseToMove = true;
 var mouseOnOffTextShown = false;
 var mouseTextInterval;
-//fleffyY is 364 on the arc of the jump.
-//Top scores
+var creditsStarted = false;
+var phase = 1;
+var phaseTimers = {
+  p2: false,
+  p3: false,
+  p4: false,
+  p5: false,
+  p6: false,
+  p7: false,
+  p8: false,
+  p9: false,
+  p10: false,
+  p11: false,
+  returnTimer: false,
+}
+//fleffyY is  at y: 364 on the arc of the jump.
 var hsX = 385;
 var hsY = 125;
 var rank = 0;
@@ -36,7 +51,7 @@ const ratingConTab = {
 var scoreX = 5;
 var scoreY = 30;
 var spikeY = 600;
-var scrn = 1;
+//var scrn = 1;
 var score = 0;
 var runMeter = 0;
 var stepDistance = 20;
@@ -45,21 +60,24 @@ var runMeterY = 10;
 var grassCostume = true;
 var isTitlePlaying = false;
 var isMusicPlaying = false;
+var isCreditsPlaying = false;
 var isTitleLoaded = false;
 var saidImFleffy = false;
 var drawSpikes = false;
 var renderSpikes = true;
 var masterSpikeIntervalSet = false;
+var nice = "nice"
 var spikeX = 1000;
 var hd = {
   increaseTimerSet: false,
   decreaseTimerSet: true
 }
 var spikeTimerSet = false;
+var creditTextX = (fleffyCanvas.width / 2) - (ctx.measureText("CREDITS").width / 2); //3
 titleTheme.loop = true;
 regularTheme.loop = true;
 isInHyperdrive = false;
-fleffyCostume = true;
+fleffyCostume = true; //2
 var hasDoneGameOver = false;
 spikeCounter = 0;
 var grassTimer = setInterval(function() {
@@ -75,73 +93,62 @@ setMouse = function(event) {
   mouseX = event.clientX + distX;
   mouseY = event.clientY + distY;
 }
+
+doJump = function() /* Makes Fleffy jump*/{
+  if (scrn == 2 && !isJumping) {
+    jump();
+  } else if (isJumping) {
+    sayNo();
+  }
+}
+
+doActivateRun = function() /* Activates hyperdrive*/{
+  if (runMeter == 10) {
+    regularTheme.stop();
+    isInHyperdrive = true;
+    rmDecrInterval = setInterval(function() {
+      if (runMeter != 0) {
+        runMeter += -1;
+      } else {
+        isInHyperdrive = false;
+        titleTheme.stop();
+        regularTheme.play();
+        clearInterval(rmDecrInterval);
+      }
+    }, 2000);
+  } else {
+    sayNo();
+  }
+}
+
+doGoLeft = function() /* Makes Fleffy go left*/{
+  fleffyX += stepDistance - (stepDistance * 2);
+}
+
+doGoRight = function() /* Makes Fleffy go right*/{
+  fleffyX += stepDistance;
+}
+
+
 handleKey = function(event) {
   switch (event.key) {
-    case " ":
-    if (scrn == 2 && !isJumping) {
-      jump();
-    } else if (isJumping) {
-      sayNo();
-    }
+    case " ": //" "
+    doJump();
     break;
-    case "ArrowLeft":
-    fleffyX += stepDistance - (stepDistance * 2);
+    //Left and right arrows do not work for some reason
+    case "ArrowLeft": //"ArrowLeft"
+    doGoLeft();
     break;
-    case "ArrowRight":
-    fleffyX += stepDistance;
+    case "ArrowRight": //"ArrowRight"
+    doGoRight();
     break;
-    case "r":
-    if (runMeter == 10) {
-      regularTheme.stop();
-      isInHyperdrive = true;
-      rmDecrInterval = setInterval(function() {
-        if (runMeter != 0) {
-          runMeter += -1;
-        } else {
-          isInHyperdrive = false;
-          titleTheme.stop();
-          regularTheme.play();
-          clearInterval(rmDecrInterval);
-          /*
-          rmInterval = setInterval(function() {
-            if (runMeter != 10 && !isInHyperdrive) {
-              runMeter += 1;
-            }
-          }, 1000);
-          */
-        }
-      }, 2000);
-    } else {
-      sayNo();
-    }
+    case "r": //"r"
+    doActivateRun()
     break;
-    case "m":
+    case "m": //"m"
     useMouseToMove = !useMouseToMove;
-    /*
-    var onOff;
-    if (useMouseToMove) {
-      onOff = "on";
-    } else {
-      onOff = "off"
-    }
-    onOff = "Mouse movement is " + onOff;
-    ctx.fillStyle = "red";
-    ctx.font = "10px Comic Sans";
-    if (mouseOnOffTextShown) {
-      clearInterval(mouseTextInterval);
-      mouseOnOffTextShown = false;
-    }
-    mouseOnOffTextShown = true;
-    mouseTextInterval = setInterval(function() {
-      ctx.fillText(onOff, (fleffyCanvas.width / 2) - (ctx.measureText(onOff) / 2), fleffyCanvas.height * 0.25);
-    }, 19)
-    setTimeout(function() {
-      clearInterval(mouseTextInterval);
-      mouseOnOffTextShown = false;
-    }, 5000)
-    */
     break;
-    case "R":
+    case "R": //"R"
     if (cheatMode) {
     clearInterval(keepRunMeter);
     keepRunMeter = setInterval(function() {
@@ -149,7 +156,7 @@ handleKey = function(event) {
       }, 1)
     }
     break;
-    case "1":
+    case "1": //"1"
     if (cheatMode) {
     clearInterval(keepRunMeter);
     keepRunMeter = setInterval(function() {
@@ -221,7 +228,7 @@ handleKey = function(event) {
       }, 1)
     }
     break;
-    case "0":
+    case "0": //"0"
     if (cheatMode) {
     clearInterval(keepRunMeter);
     keepRunMeter = setInterval(function() {
@@ -229,13 +236,13 @@ handleKey = function(event) {
       }, 1)
     }
     break;
-    case "\`":
+    case "\'": //"\'"
     if (cheatMode) {
     clearInterval(keepRunMeter);
     }
     break;
 
-    case "Escape":
+    case "Escape": //"Escape"
       gameOver();
       scrn = 1;
     break;
@@ -318,9 +325,11 @@ EditButton = function(variable, x, y, promptText = null) {
 }
 var f = new CollisionBox(18, 50, 8, 24);
 var pleBox = new CollisionBox(484, 574, 417, 531);
+var credetsBox = new CollisionBox(580, 670, 417, 531);
 drawDot = function() {
 
   ctx.clearRect(0, 0, 960, 720);
+  //This is the original algorithm to test canvas, Fleffy Run had not been developed for web yet.
   //ctx.drawImage(document.getElementById("fleffy_run_1"), mouseX + distX, mouseY + distY);
   /*
   ctx.beginPath();
@@ -339,8 +348,9 @@ drawDot = function() {
   ctx.fillText(f.isTouchingMouse().toString(), 930, 50);
   */
 
-  if (scrn == 1) {
+  if (scrn === 1) {
     drawSpikes = false;
+    videoPlaying = false;
     regularTheme.stop();
     drawTitleScreen();
     if (!isTitlePlaying) {
@@ -349,7 +359,7 @@ drawDot = function() {
         titleTheme.play();
       }, 100)
     }
-  } else if (scrn == 2) {
+  } else if (scrn === 2) {
     drawPlayingField();
     if (!isInHyperdrive) {
       titleTheme.stop();
@@ -362,13 +372,24 @@ drawDot = function() {
       }
     }
     regularTheme.play();
-  } else if (scrn == "goodies") {
+  } else if (scrn === "goodies") {
     drawGoodies();
+  } else if (scrn === "credits") {
+    titleTheme.stop();
+    isTitlePlaying = false;
+    if (!videoPlaying) {
+      videoPlaying = true;
+      document.getElementById("fleffyCredits").play();
+    } else {
+      ctx.drawImage(document.getElementById("fleffyCredits"), 0, 0, 960, 720);
+    }
   }
+}
+
+
   if (showMouseCoords) {
     drawMouseCoords();
   }
-}
 center = function(x, y, w, h) {
   this.x = x - (w / 2);
   this.y = y - (h / 2);
@@ -385,19 +406,29 @@ drawTitleScreen = function() {
   //Draw the background
   ctx.drawImage(title, 0, 0);
   //Draw the 'ple' button
-  ctx.drawImage(ple, 360 + (114/2), 121 * 4);
+  ctx.drawImage(ple, 417, 484);
+  //Draw the credits button
+  ctx.drawImage(credets, 417, 580, 114, 90);
   //If the mouse is touching the 'ple' button, create an outline
-  if (pleBox.isTouchingMouse() && scrn == 1) {
-    pleBox.draw('black');
+  if ((pleBox.isTouchingMouse() || credetsBox.isTouchingMouse()) && scrn == 1) {
+    if (pleBox.isTouchingMouse()) {
+      pleBox.draw('black');
+    } else if (credetsBox.isTouchingMouse()) {
+      credetsBox.draw('black');
+    }
     document.getElementById("fleffyCanvas").style.cursor = "pointer";
   } else {
     document.getElementById("fleffyCanvas").style.cursor = "auto";
   }
   //Draw the high score text
   ctx.font = '20px Comic Sans MS';
+  ctx.fillStyle = 'black';
   ctx.fillText("High Score: " + highScore, hsX, hsY);
-  //Draw the gift box
-  //ctx.drawImage(gift, giftX, giftY); NO GIFTS! IT DON'T WORKS!
+  //Draw text signaling cheat mode
+  if (cheatMode) {
+    ctx.fillStyle = 'red'; //Because of this line, the score will become red in the game.
+    ctx.fillText("CHEATER CHEATER PUMPKIN EATER!", (fleffyCanvas.width - ctx.measureText("CHEATER CHEATER PUMPKIN EATER").width) - 10, fleffyCanvas.height - 20 )
+  }
 
 }
 storeHighScore = function() {
@@ -433,16 +464,10 @@ onMouseClick = function() {
       }
     }, 2000)
     scrn = 2;
+  } else if (credetsBox.isTouchingMouse() && scrn == 1) {
+    document.getElementById("fleffyCanvas").style.cursor = "auto";
+    scrn = "credits";
   }
-  /*
-  BIG NONO! IT DON'T WORKS!
-  if (giftBox.isTouchingMouse() && scrn == 1) {
-    scrn = "goodies";
-  }
-  if (closeBox.isTouchingMouse() && scrn == "goodies") {
-    scrn = 1;
-  }
-  */
 }
 draw = function() {
   alert("Nothing in here yet!")

@@ -44,6 +44,7 @@ var title = addImage("title.png", "title");
 var bg = addImage("bg.png", "bg");
 //Sprites
 var close_button = addImage("sprites/close_button.png", "close_button");
+var credets = addImage("sprites/credets.png", "credets", "114-90");
 var fleffy_comic_1 = addImage("fleffy_comic_1.png", "fleffy_comic_1");
 var fleffy_run_1 = addImage("sprites/fleffy_run_1.png", "fleffy_run_1");
 var fleffy_run_2 = addImage("sprites/fleffy_run_2.png", "fleffy_run_2");
@@ -72,10 +73,11 @@ var run_meter_9 = addImage("sprites/run_meter_9.png", "run_meter_9");
 var run_meter_10 = addImage("sprites/run_meter_10.png", "run_meter_10");
 var spike = addImage("sprites/spike.png", "spike");
 //Mobile Buttons
-var m_btn_left = addImage("sprites/mobile/m_btn_left.png", "m_btn_left");
-var m_btn_right = addImage("sprites/mobile/m_btn_right.png", "m_btn_right");
-var m_btn_jump = addImage("sprites/mobile/m_btn_jump.png", "m_btn_jump");
-var m_btn_run = addImage("sprites/mobile/m_btn_run.png", "m_btn_run");
+//If anybody wants to make a mobile port of this, go ahead, just don't sell it.
+var m_btn_left = addImage("sprites/mobile/m_btn_left.png", "m_btn_left"); //Left
+var m_btn_right = addImage("sprites/mobile/m_btn_right.png", "m_btn_right"); //Right
+var m_btn_jump = addImage("sprites/mobile/m_btn_jump.png", "m_btn_jump"); //Jump
+var m_btn_run = addImage("sprites/mobile/m_btn_run.png", "m_btn_run"); //Run
 //Sounds
 var ranking_sound_3 = addSound("sounds/awesome.wav", "awesome");
 var boing = addSound("sounds/boing.mp3", "boing");
@@ -87,5 +89,6 @@ var imFleffy = addSound("sounds/imFleffy.wav", "imFleffy");
 var no = addSound("sounds/no.wav", "no");
 var err = addSound("sounds/err.mp3", "err");
 //Music
-var titleTheme = addSound("title.mp3", "titleTheme");
+var titleTheme = addSound("remasteredTitle.mp3", "titleTheme");
 var regularTheme = addSound("regular.mp3", "regularTheme");
+var credits = addSound("credets.mp3", "credits");
